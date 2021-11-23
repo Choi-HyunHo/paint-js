@@ -3,11 +3,14 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 const INITIAL_COLOR = "#2c2c2c";
 
 canvas.width = 700;
 canvas.height = 700;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height); // 기본적으로 canvas의 배경은 white
 ctx.fillStyle = INITIAL_COLOR;
 ctx.strokeStyle = INITIAL_COLOR; // default 색상 
 ctx.lineWidth = 2.5; // 선의 굵기
@@ -67,20 +70,33 @@ function modeClick(){ // 버튼의 모드 변경
 
 function canvasClick(){
     if(filling){
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 }
 
+function handleCM(event){
+    event.preventDefault();
+}
+
+function saveClick(){ // 그림 저장
+    const image = canvas.toDataURL(); // 지정된 포맷의 이미지를 표현을 포함한 data URL을 반환
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "PaintJS[EXPORT]";
+    link.click();
+}
 
 canvas.addEventListener("mousemove",onMouseMove); // 캔버스 위에서 움직일 때
 canvas.addEventListener("mousedown", startPainting); // 캔버스 위에서 클릭 했을 때
 canvas.addEventListener("mouseup", stopPainting); // 캔버스 위에서 클릭 해제
 canvas.addEventListener("mouseleave", stopPainting); // 마우스가 캔버스 위에 벗어날 경우
-canvas.addEventListener("click", canvasClick) // 모드 변경
+canvas.addEventListener("click", canvasClick); // 모드 변경
+canvas.addEventListener("contextmenu", handleCM);
 
 Array.from(colors).forEach(color => color.addEventListener("click", changeColor)); 
 // 각 컬러들을 배열로 만들어주고, forEach() 를 사용하여 배열을 하나씩 실행시킨다.
 
 
-range.addEventListener("input", changeRange)
-mode.addEventListener("click", modeClick)
+range.addEventListener("input", changeRange);
+mode.addEventListener("click", modeClick);
+saveBtn.addEventListener("click", saveClick);
