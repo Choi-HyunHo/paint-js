@@ -1,5 +1,6 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
+const colors = document.getElementsByClassName("jsColor");
 
 canvas.width = 700;
 canvas.height = 700;
@@ -37,6 +38,11 @@ function onMouseUp(event){
     stopPainting()
 }
 
+function changeColor(event){
+    const color = event.target.style.backgroundColor;
+    ctx.strokeStyle = color;
+}
+
 
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove); // 캔버스 위에서 움직일 때
@@ -44,3 +50,6 @@ if(canvas){
     canvas.addEventListener("mouseup", stopPainting); // 캔버스 위에서 클릭 해제
     canvas.addEventListener("mouseleave", stopPainting); // 마우스가 캔버스 위에 벗어날 경우
 }
+
+Array.from(colors).forEach(color => color.addEventListener("click", changeColor)); 
+// 각 컬러들을 배열로 만들어주고, forEach() 를 사용하여 배열을 하나씩 실행시킨다.
