@@ -3,12 +3,15 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const INITIAL_COLOR = "#2c2c2c";
 
 canvas.width = 700;
 canvas.height = 700;
 
-ctx.strokeStyle = "#2c2c2c"; // default 색상 
+ctx.fillStyle = INITIAL_COLOR;
+ctx.strokeStyle = INITIAL_COLOR; // default 색상 
 ctx.lineWidth = 2.5; // 선의 굵기
+
 
 let painting = false;
 let filling = false;
@@ -41,17 +44,18 @@ function onMouseUp(event){
     stopPainting()
 }
 
-function changeColor(event){
+function changeColor(event){ // 색상 변경
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
+    ctx.fillStyle = color;
 }
 
-function changeRange(event){
+function changeRange(event){ // 브러쉬의 굵기 설정
     const size = event.target.value;
     ctx.lineWidth = size;
 }
 
-function modeClick(){
+function modeClick(){ // 버튼의 모드 변경
     if(filling === true){
         filling = false;
         mode.innerText = "Fill";
@@ -61,21 +65,22 @@ function modeClick(){
     }
 }
 
-
-if(canvas){
-    canvas.addEventListener("mousemove",onMouseMove); // 캔버스 위에서 움직일 때
-    canvas.addEventListener("mousedown", startPainting); // 캔버스 위에서 클릭 했을 때
-    canvas.addEventListener("mouseup", stopPainting); // 캔버스 위에서 클릭 해제
-    canvas.addEventListener("mouseleave", stopPainting); // 마우스가 캔버스 위에 벗어날 경우
+function canvasClick(){
+    if(filling){
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
 }
+
+
+canvas.addEventListener("mousemove",onMouseMove); // 캔버스 위에서 움직일 때
+canvas.addEventListener("mousedown", startPainting); // 캔버스 위에서 클릭 했을 때
+canvas.addEventListener("mouseup", stopPainting); // 캔버스 위에서 클릭 해제
+canvas.addEventListener("mouseleave", stopPainting); // 마우스가 캔버스 위에 벗어날 경우
+canvas.addEventListener("click", canvasClick) // 모드 변경
 
 Array.from(colors).forEach(color => color.addEventListener("click", changeColor)); 
 // 각 컬러들을 배열로 만들어주고, forEach() 를 사용하여 배열을 하나씩 실행시킨다.
 
-if(range){
-    range.addEventListener("input", changeRange)
-}
 
-if(mode){
-    mode.addEventListener("click", modeClick)
-}
+range.addEventListener("input", changeRange)
+mode.addEventListener("click", modeClick)
