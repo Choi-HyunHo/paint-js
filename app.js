@@ -1,6 +1,9 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 
+canvas.width = 700;
+canvas.height = 700;
+
 ctx.strokeStyle = "#2c2c2c"; // default 색상 
 ctx.lineWidth = 2.5; // 선의 굵기
 
@@ -17,7 +20,7 @@ function startPainting(){
 function onMouseMove(event){
     const x = event.offsetX;
     const y = event.offsetY;
-    if(!painting){  // 클릭하고 움직이면 실행되지 않는다.
+    if(painting === false){  // 클락하지 않고 마우스를 움직였을 때 시작 - beginPath
         ctx.beginPath(); // 경로 생성
         ctx.moveTo(x,y); // 선 시작 좌표
     } else {
