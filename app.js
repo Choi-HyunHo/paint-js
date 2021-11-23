@@ -1,6 +1,7 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
+const range = document.getElementById("jsRange");
 
 canvas.width = 700;
 canvas.height = 700;
@@ -43,6 +44,11 @@ function changeColor(event){
     ctx.strokeStyle = color;
 }
 
+function changeRange(event){
+    const size = event.target.value;
+    ctx.lineWidth = size;
+}
+
 
 if(canvas){
     canvas.addEventListener("mousemove",onMouseMove); // 캔버스 위에서 움직일 때
@@ -53,3 +59,7 @@ if(canvas){
 
 Array.from(colors).forEach(color => color.addEventListener("click", changeColor)); 
 // 각 컬러들을 배열로 만들어주고, forEach() 를 사용하여 배열을 하나씩 실행시킨다.
+
+if(range){
+    range.addEventListener("input", changeRange)
+}
